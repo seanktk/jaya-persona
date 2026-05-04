@@ -181,27 +181,37 @@
       return;
     }
 
-    // All clear — simulate submission (replace with real fetch() in production)
+    // All clear — submit to Web3Forms → forwards to apjayapersona@gmail.com
     const submitBtn = form.querySelector('button[type="submit"]');
     const originalText = submitBtn.innerHTML;
     submitBtn.disabled = true;
     submitBtn.innerHTML = 'Sending…';
 
-    // Simulated network delay
-    setTimeout(() => {
-      form.reset();
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = originalText;
+    fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      body: fd,
+      headers: { 'Accept': 'application/json' },
+    })
+      .then(res => res.json())
+      .then(data => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
 
-      if (successBox) {
-        successBox.classList.remove('hidden');
-        successBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-        // Auto-hide after a few seconds
-        setTimeout(() => {
-          successBox.classList.add('hidden');
-        }, 6000);
-      }
-    }, 900);
+        if (data.success) {
+          form.reset();
+          if (successBox) {
+            successBox.classList.remove('hidden');
+            successBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            setTimeout(() => successBox.classList.add('hidden'), 6000);
+          }
+        } else {
+          alert('Something went wrong. Please try again or call us directly.');
+        }
+      })
+      .catch(() => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+        alert('Network error. Please try again or call us directly.');
+      });
   });
 })();
