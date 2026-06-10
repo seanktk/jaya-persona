@@ -234,6 +234,36 @@ body {
 /* =========================================================
    HERO
    ========================================================= */
+
+/* Glow wrapper that ties the hero image into the page's blob system */
+.hero-img-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-img-wrap::before {
+  content: '';
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(ellipse at 65% 35%, rgba(6, 165, 209, 0.22) 0%, transparent 55%),
+    radial-gradient(ellipse at 30% 70%, rgba(118, 199, 69, 0.16) 0%, transparent 55%);
+  border-radius: 50%;
+  filter: blur(55px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero-img-wrap img {
+  position: relative;
+  z-index: 1;
+  filter:
+    drop-shadow(0 24px 48px rgba(31, 43, 46, 0.10))
+    drop-shadow(0 4px 12px rgba(6, 165, 209, 0.08));
+}
+
 .hero-highlight {
   position: relative;
   display: inline-block;
@@ -733,6 +763,168 @@ body {
 @keyframes fade-rise {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================================
+   TABLE OF CONTENTS
+   ========================================================= */
+.toc-box {
+  background: white;
+  border: 1px solid rgba(6,165,209,0.2);
+  border-left: 4px solid #06A5D1;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 2.5rem;
+  box-shadow: 0 4px 16px -4px rgba(6,165,209,0.12);
+}
+.toc-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #06A5D1;
+  margin-bottom: 1rem;
+}
+.toc-header svg { width: 1rem; height: 1rem; stroke: #06A5D1; flex-shrink: 0; }
+.toc-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem; counter-reset: toc-counter; }
+.toc-list li { counter-increment: toc-counter; display: flex; align-items: flex-start; gap: 0.75rem; }
+.toc-list li::before { content: counter(toc-counter, decimal-leading-zero); font-size: 0.7rem; font-weight: 700; color: #76C745; min-width: 1.5rem; padding-top: 0.15rem; }
+.toc-list a { font-size: 0.9rem; color: #4A5A5E; text-decoration: none; transition: color 0.2s ease; line-height: 1.5; }
+.toc-list a:hover { color: #06A5D1; }
+
+/* =========================================================
+   FAQ ACCORDION
+   ========================================================= */
+.faq-list { display: flex; flex-direction: column; gap: 0.75rem; }
+
+.faq-list { counter-reset: faq-counter; }
+
+.faq-item {
+  background: white;
+  border: 1px solid rgba(31,43,46,0.08);
+  border-radius: 1rem;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  counter-increment: faq-counter;
+}
+.faq-item + .faq-item { margin-top: 0.625rem; }
+.faq-item:hover { border-color: rgba(6,165,209,0.3); box-shadow: 0 4px 16px -4px rgba(6,165,209,0.15); }
+.faq-item.is-open { border-color: #06A5D1; border-left-width: 4px; box-shadow: 0 6px 24px -6px rgba(6,165,209,0.2); }
+
+.faq-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.1rem 1.25rem;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #1F2B2E;
+  background: none;
+  border: none;
+  text-align: left;
+  transition: color 0.2s ease, background 0.2s ease;
+  font-family: inherit;
+}
+.faq-btn::before {
+  content: counter(faq-counter, decimal-leading-zero);
+  flex-shrink: 0;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #76C745;
+  background: rgba(118,199,69,0.1);
+  border-radius: 0.5rem;
+  padding: 0.2rem 0.45rem;
+  letter-spacing: 0.03em;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.faq-item.is-open .faq-btn { color: #06A5D1; background: rgba(6,165,209,0.04); border-bottom: 1px solid rgba(6,165,209,0.1); }
+.faq-item.is-open .faq-btn::before { background: #76C745; color: white; }
+
+.faq-btn-text { flex: 1; }
+
+.faq-icon {
+  flex-shrink: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: rgba(6,165,209,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.25s ease;
+}
+.faq-icon svg { width: 14px; height: 14px; stroke: #06A5D1; transition: transform 0.3s ease; display: block; flex-shrink: 0; }
+.faq-item.is-open .faq-icon { background: #06A5D1; }
+.faq-item.is-open .faq-icon svg { stroke: white; transform: rotate(180deg); }
+
+.faq-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+}
+.faq-body-inner {
+  padding: 1rem 1.25rem 1.1rem 3.5rem;
+  color: #4A5A5E;
+  line-height: 1.75;
+  font-size: 0.9rem;
+  border-top: 1px solid rgba(6,165,209,0.08);
+  background: rgba(6,165,209,0.02);
+}
+.faq-body-inner p { margin: 0; }
+.faq-body-inner a { color: #06A5D1; text-decoration: underline; text-decoration-color: rgba(6,165,209,0.3); text-underline-offset: 3px; }
+.faq-body-inner a:hover { color: #048BB0; }
+
+/* =========================================================
+   BLOG ARTICLE PROSE
+   ========================================================= */
+.prose-article { color: #4A5A5E; line-height: 1.8; font-size: 1.0625rem; }
+.prose-article .lead { font-size: 1.125rem; color: #1F2B2E; line-height: 1.75; margin-bottom: 2rem; }
+.prose-article h2 { font-family: 'Fraunces', serif; font-size: 1.5rem; font-weight: 600; color: #1F2B2E; margin-top: 2.5rem; margin-bottom: 1rem; }
+.prose-article p { margin-bottom: 1.25rem; }
+.prose-article ul { list-style: none; padding: 0; margin-bottom: 1.25rem; }
+.prose-article ul li { padding-left: 1.5rem; position: relative; margin-bottom: 0.5rem; }
+.prose-article ul li::before { content: '✓'; position: absolute; left: 0; color: #76C745; font-weight: 700; }
+.prose-article strong { color: #1F2B2E; font-weight: 600; }
+
+/* =========================================================
+   CERTIFICATE WATERMARK
+   ========================================================= */
+.cert-wrap {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+  box-shadow: 0 10px 30px -12px rgba(31, 43, 46, 0.15);
+  background: #fff;
+}
+
+.cert-img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.cert-watermark {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Fraunces', serif;
+  font-size: clamp(1.25rem, 4vw, 2rem);
+  font-weight: 700;
+  color: rgba(6, 165, 209, 0.22);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transform: rotate(-35deg);
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  text-shadow: 0 1px 2px rgba(6, 165, 209, 0.1);
 }
 
 /* =========================================================
