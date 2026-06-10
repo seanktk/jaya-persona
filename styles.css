@@ -892,6 +892,42 @@ body {
 .prose-article strong { color: #1F2B2E; font-weight: 600; }
 
 /* =========================================================
+   CERTIFICATE WATERMARK
+   ========================================================= */
+.cert-wrap {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+  box-shadow: 0 10px 30px -12px rgba(31, 43, 46, 0.15);
+  background: #fff;
+}
+
+.cert-img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.cert-watermark {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Fraunces', serif;
+  font-size: clamp(1.25rem, 4vw, 2rem);
+  font-weight: 700;
+  color: rgba(6, 165, 209, 0.22);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transform: rotate(-35deg);
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  text-shadow: 0 1px 2px rgba(6, 165, 209, 0.1);
+}
+
+/* =========================================================
    REDUCED MOTION
    ========================================================= */
 @media (prefers-reduced-motion: reduce) {
